@@ -12,7 +12,7 @@ import kotlinx.coroutines.*
  */
 suspend fun main(args: Array<String>) {
     // that is your bot
-    val bot = telegramBot(1971402996:AAGuJGMw0bcHjt5o6EjqpNhYXTb4R5-3VmU)
+    val bot = telegramBot(args.first())
 
     // that is kotlin coroutine scope which will be used in requests and parallel works under the hood
     val scope = CoroutineScope(Dispatchers.Default)
@@ -26,25 +26,6 @@ suspend fun main(args: Array<String>) {
         onCommand("start", requireOnlyCommandInMessage = true) {
             // simply reply :)
             reply(it, "Hello, I am ${me.firstName}")
-        }
-
-        fun save(sources: List<TextSource>) {
-          // работа с сохранением частей текста
-          println(sources.makeString()) // 3
-        }
-
-        onContentMessage {
-          it.content.asTextContent() ?.let { content -> // 1
-            save(content.textSources) // 2
-          }
-          execute(it.content.createResend(it.chat.id))
-        }
-
-        onCommand("start") { // 1
-          reply(it, "Привет, я пока что умею не так много, но скоро всему научусь!") // 2
-        }
-        onCommand("help") {
-          reply(it, "Отправьте мне любое сообщение, и я отвечу вам тем же?")
         }
     }.join()
 }
